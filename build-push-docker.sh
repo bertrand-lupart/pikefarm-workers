@@ -27,7 +27,7 @@ build_push()
 
   ${bin_docker} buildx build \
     --tag="${user}/${repo}:${tag}" \
-    --platform="${ARCH}" \
+    --platform="${arch}" \
     --push \
     "${dir}"
 
