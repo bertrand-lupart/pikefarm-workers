@@ -3,25 +3,22 @@
 set -x
 set -e
 
-BIN_DOCKER="/usr/local/bin/docker"
+bin_docker="/usr/local/bin/docker"
 
 # Docker hub
-USER="bertrandlupart"
-REPO="pikefarm-worker"
-PATH="${USER}/${REPO}"
+user="bertrandlupart"
+repo="pikefarm-worker"
 
-
-for d in "docker"/*; do
+for dir in "docker"/*; do
   
-  if [ ! -d ${d} ]; 
-  then
+  if [ ! -d "${dir}" ]; then
     exit
   fi
 
-  . ${d}/vars
+  . "${dir}/vars"
  
-  target=`/usr/bin/basename ${d}`
+  tag=$(basename "${dir}")
 
-  ${BIN_DOCKER} buildx build -t ${PATH}:${target} --platform=${ARCH} --push ${d}
+  ${bin_docker} buildx build --tag="${user}/${repo}:${tag}" --platform="${ARCH}" --push "${dir}"
 
 done
