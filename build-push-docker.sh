@@ -26,9 +26,9 @@ build_push()
   tag=$(basename "${dir}")
 
   ${bin_docker} buildx build \
-    --tag="${user}/${repo}:${tag}"
-    --platform="${ARCH}"
-    --push
+    --tag="${user}/${repo}:${tag}" \
+    --platform="${ARCH}" \
+    --push \
     "${dir}"
 
   return
