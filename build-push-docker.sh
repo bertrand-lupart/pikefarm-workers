@@ -9,16 +9,42 @@ bin_docker="/usr/local/bin/docker"
 user="bertrandlupart"
 repo="pikefarm-worker"
 
-for dir in "docker"/*; do
-  
+
+# Build Dockerfile and push to Docker hub
+
+build_push()
+{
+  dir=$1
+
   if [ ! -d "${dir}" ]; then
-    exit
+    echo "${dir} is not a directory" >&2
+    return
   fi
 
   . "${dir}/vars"
  
   tag=$(basename "${dir}")
 
-  ${bin_docker} buildx build --tag="${user}/${repo}:${tag}" --platform="${ARCH}" --push "${dir}"
+  ${bin_docker} buildx build \
+    --tag="${user}/${repo}:${tag}"
+    --platform="${ARCH}"
+    --push
+    "${dir}"
 
-done
+  return
+}
+
+
+# Either give directory/ies as argument(s), either loop over docker/ directory
+
+if [ $# == 0 ]; then
+  for elem in "docker"/*; do
+    echo "building ${elem}"
+    build_push "${elem}"
+  done
+else
+  for elem in $*; do
+    echo "building ${elem}"
+    build_push "${elem}"
+  done
+fi
