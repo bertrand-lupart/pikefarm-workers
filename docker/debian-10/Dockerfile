@@ -7,8 +7,8 @@ RUN apt-get update && apt-get upgrade -y && apt-get install -y --no-install-reco
   libpcre2-dev \
   && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-RUN groupadd --system --gid 999 xenofarm && \
-  useradd --system --gid xenofarm --uid 999 xenofarm
+RUN groupadd --system --gid 817 xenofarm && \
+  useradd --system --gid xenofarm --uid 817 xenofarm
 
 USER xenofarm
 

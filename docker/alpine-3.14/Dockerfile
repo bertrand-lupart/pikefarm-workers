@@ -5,8 +5,8 @@ RUN apk add --update \
   nettle-dev nettle \
   && rm -rf /var/cache/apk/*
 
-RUN addgroup -S -g 998 xenofarm && \
-  adduser -S -G xenofarm -u 999 xenofarm
+RUN addgroup -S -g 817 xenofarm && \
+  adduser -S -G xenofarm -u 817 xenofarm
 
 USER xenofarm
 
