@@ -1,0 +1,29 @@
+resources:
+  - name: pikefarm-workers-blueprints
+    type: git
+    icon: github
+    source:
+      uri: https://github.com/bertrand-lupart/pikefarm-workers.git
+      branch: main
+
+jobs:
+  - name: build-images
+    plan:
+      - get: pikefarm-workers-blueprints
+        trigger: true
+      - task: docker-build
+        privileged: true
+        config:
+          platform: linux
+          inputs:
+            - name: pikefarm-workers-blueprints
+          outputs:
+            - name: image
+          image_resource:
+            type: registry-image
+            source:
+              repository: concourse/oci-build-task
+          run:
+            path: build
+          params:
+            CONTEXT: pikefarm-workers-blueprints/docker/debian-10
