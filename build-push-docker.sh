@@ -7,7 +7,7 @@ bin_docker="/usr/local/bin/docker"
 
 # Docker hub
 user="bertrandlupart"
-repo="pikefarm-worker"
+repo="pikefarm-workers"
 
 
 # Build Dockerfile and push to Docker hub
