@@ -1,22 +1,52 @@
 resources:
-  - name: pikefarm-workers-blueprints
+  - name: pikefarm-workers-blueprints-debian-10
     type: git
     icon: github
     source:
       uri: https://github.com/bertrand-lupart/pikefarm-workers.git
       branch: main
+      paths:
+        - docker/debian-10/*
+
+  - name: pikefarm-workers-blueprints-debian-11
+    type: git
+    icon: github
+    source:
+      uri: https://github.com/bertrand-lupart/pikefarm-workers.git
+      branch: main
+      paths:
+        - docker/debian-11/*
+
+  - name: pikefarm-workers-harbor-slot-debian-10
+    type: registry-image
+    icon: docker
+    source:
+      repository: harbor.ci.gstack.io/pikelang/pikefarm-workers
+      username: ((docker-registry-username))
+      password: ((docker-registry-password))
+      tag: debian-10
+
+  - name: pikefarm-workers-harbor-slot-debian-11
+    type: registry-image
+    icon: docker
+    source:
+      repository: harbor.ci.gstack.io/pikelang/pikefarm-workers
+      username: ((docker-registry-username))
+      password: ((docker-registry-password))
+      tag: debian-11
 
 jobs:
-  - name: build-images
+
+  - name: build-debian-10
     plan:
-      - get: pikefarm-workers-blueprints
+      - get: pikefarm-workers-blueprints-debian-10
         trigger: true
       - task: docker-build
         privileged: true
         config:
           platform: linux
           inputs:
-            - name: pikefarm-workers-blueprints
+            - name: pikefarm-workers-blueprints-debian-10
           outputs:
             - name: image
           image_resource:
@@ -26,4 +56,37 @@ jobs:
           run:
             path: build
           params:
-            CONTEXT: pikefarm-workers-blueprints/docker/debian-10
+            CONTEXT: pikefarm-workers-blueprints-debian-10/docker/debian-10
+#            IMAGE_PLATFORM: "linux/amd64,linux/i386,linux/arm64,linux/arm,linux/ppc64le,linux/s390x,linux/mips64le"
+        output_mapping:
+          image: pikefarm-workers-image
+      - put: pikefarm-workers-harbor-slot-debian-10
+        params:
+          image: pikefarm-workers-image/image.tar
+
+  - name: build-debian-11
+    plan:
+      - get: pikefarm-workers-blueprints-debian-11
+        trigger: true
+      - task: docker-build
+        privileged: true
+        config:
+          platform: linux
+          inputs:
+            - name: pikefarm-workers-blueprints-debian-11
+          outputs:
+            - name: image
+          image_resource:
+            type: registry-image
+            source:
+              repository: concourse/oci-build-task
+          run:
+            path: build
+          params:
+            CONTEXT: pikefarm-workers-blueprints-debian-11/docker/debian-11
+#            IMAGE_PLATFORM: "linux/amd64,linux/i386,linux/arm64,linux/arm,linux/ppc64le,linux/s390x,linux/mips64le"
+        output_mapping:
+          image: pikefarm-workers-image
+      - put: pikefarm-workers-harbor-slot-debian-11
+        params:
+          image: pikefarm-workers-image/image.tar
