@@ -7,7 +7,7 @@ resources:
     type: git
     icon: github
     source:
-      uri: https://github.com/bertrand-lupart/pikefarm-workers.git
+      uri: #@ data.values.git_uri
       branch: main
       paths:
         - #@ "docker/" + distro.name + "/*"
@@ -15,7 +15,7 @@ resources:
     type: registry-image
     icon: docker
     source:
-      repository: harbor.ci.gstack.io/pikelang/pikefarm-workers
+      repository: #@ data.values.registry_repo
       username: ((docker-registry-username))
       password: ((docker-registry-password))
       tag: #@ distro.name
@@ -45,7 +45,7 @@ jobs:
             path: build
           params:
             CONTEXT: #@ "blueprints-" + distro.name + "/docker/" + distro.name
-            IMAGE_PLATFORM: #@ "linux/"+arch
+            IMAGE_PLATFORM: #@ "linux/" + arch
         output_mapping:
           image: pikefarm-workers-image
       - put: #@ "harbor-slot-" + distro.name

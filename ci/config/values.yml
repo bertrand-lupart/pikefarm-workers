@@ -1,5 +1,7 @@
 #@data/values
 ---
+git_uri: "https://github.com/bertrand-lupart/pikefarm-workers.git"
+registry_repo: "harbor.ci.gstack.io/pikelang/pikefarm-workers"
 distros:
   - name: "debian-9"
     arch: ["amd64","i386","arm64","arm"]
