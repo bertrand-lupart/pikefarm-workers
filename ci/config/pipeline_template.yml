@@ -44,6 +44,7 @@ jobs:
             path: build
           params:
             CONTEXT: #@ "blueprints-" + distro.name + "/docker/" + distro.name
+            IMAGE_PLATFORM: #@ arch
         output_mapping:
           image: pikefarm-workers-image
       - put: #@ "harbor-slot-" + distro.name
