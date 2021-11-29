@@ -1,0 +1,17 @@
+#@data/values
+---
+distros:
+  - name: "debian-9"
+    arch: ["linux/amd64"]
+  - name: "debian-10"
+    arch: ["linux/amd64"]
+  - name: "debian-11"
+    arch: ["linux/amd64"]
+  - name: "debian-sid"
+    arch: ["linux/amd64"]
+  - name: "alpine-3.14"
+    arch: ["linux/amd64"]
+  - name: "alpine-3.15"
+    arch: ["linux/amd64"]
+  - name: "alpine-edge"
+    arch: ["linux/amd64"]
