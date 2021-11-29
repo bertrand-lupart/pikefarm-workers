@@ -3,7 +3,7 @@
 resources:
 
 #@ for distro in data.values.distros :
-  - name: #@ "pikefarm-workers-blueprints-" + distro.name
+  - name: #@ "blueprints-" + distro.name
     type: git
     icon: github
     source:
@@ -11,7 +11,7 @@ resources:
       branch: main
       paths:
         - #@ "docker/" + distro.name + "/*"
-  - name: #@ "pikefarm-workers-harbor-slot-" + distro.name
+  - name: #@ "harbor-slot-" + distro.name
     type: registry-image
     icon: docker
     source:
@@ -23,16 +23,17 @@ resources:
 
 jobs:
 #@ for distro in data.values.distros :
+#@   for arch in distro.arch :
   - name: #@ "build-" + distro.name
     plan:
-      - get: #@ "pikefarm-workers-blueprints-" + distro.name
+      - get: #@ "blueprints-" + distro.name
         trigger: true
       - task: docker-build
         privileged: true
         config:
           platform: linux
           inputs:
-            - name: #@ "pikefarm-workers-blueprints-" + distro.name
+            - name: #@ "blueprints-" + distro.name
           outputs:
             - name: image
           image_resource:
@@ -42,11 +43,11 @@ jobs:
           run:
             path: build
           params:
-            CONTEXT: #@ "pikefarm-workers-blueprints-" + distro.name + "/docker/" + distro.name
+            CONTEXT: #@ "blueprints-" + distro.name + "/docker/" + distro.name
         output_mapping:
           image: pikefarm-workers-image
-      - put: #@ "pikefarm-workers-harbor-slot-" + distro.name
+      - put: #@ "harbor-slot-" + distro.name
         params:
           image: pikefarm-workers-image/image.tar
+#@  end
 #@ end
-
