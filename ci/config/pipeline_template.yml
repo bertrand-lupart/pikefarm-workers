@@ -24,7 +24,7 @@ resources:
 jobs:
 #@ for distro in data.values.distros :
 #@   for arch in distro.arch :
-  - name: #@ "build-" + distro.name
+  - name: #@ "build-" + distro.name + "-" + arch
     plan:
       - get: #@ "blueprints-" + distro.name
         trigger: true
@@ -44,7 +44,7 @@ jobs:
             path: build
           params:
             CONTEXT: #@ "blueprints-" + distro.name + "/docker/" + distro.name
-            IMAGE_PLATFORM: #@ arch
+            IMAGE_PLATFORM: #@ "linux/"+arch
         output_mapping:
           image: pikefarm-workers-image
       - put: #@ "harbor-slot-" + distro.name
