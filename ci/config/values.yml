@@ -2,16 +2,16 @@
 ---
 distros:
   - name: "debian-9"
-    arch: ["amd64"]
+    arch: ["amd64","i386","arm64","arm"]
   - name: "debian-10"
-    arch: ["amd64"]
+    arch: ["amd64","i386","arm64","arm","ppc64le","s390x","mips64le"]
   - name: "debian-11"
-    arch: ["amd64"]
+    arch: ["amd64","i386","arm64","arm","ppc64le","s390x","mips64le"]
   - name: "debian-sid"
-    arch: ["amd64"]
+    arch: ["amd64","i386","arm64","arm","ppc64le","s390x","mips64le"]
   - name: "alpine-3.14"
-    arch: ["amd64"]
+    arch: ["amd64","i386","arm64","arm","ppc64le","s390x"]
   - name: "alpine-3.15"
-    arch: ["amd64"]
+    arch: ["amd64","i386","arm64","arm","ppc64le","s390x"]
   - name: "alpine-edge"
-    arch: ["amd64","arm64"]
+    arch: ["amd64","i386","arm64","arm","ppc64le","s390x"]
