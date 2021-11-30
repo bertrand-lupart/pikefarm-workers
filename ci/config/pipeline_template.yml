@@ -25,7 +25,7 @@ jobs:
 #@ for distro in data.values.distros :
 #@   for arch in distro.arch :
   - name: #@ "build-" + distro.name + "-" + arch
-    serial: true
+    serial_groups: [ build-image ]
     plan:
       - get: #@ "blueprints-" + distro.name
         trigger: true
