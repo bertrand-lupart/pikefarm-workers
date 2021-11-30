@@ -1,9 +1,13 @@
 #@ load("@ytt:data", "data")
 
+#@ def stripslash(n):
+#@  return n.replace("/","-")
+#@ end
+
 resources:
 
 #@ for distro in data.values.distros :
-  - name: #@ "blueprints-" + distro.name
+  - name: #@ stripslash("blueprints-" + distro.name)
     type: git
     icon: github
     source:
@@ -11,7 +15,7 @@ resources:
       branch: main
       paths:
         - #@ "docker/" + distro.name + "/*"
-  - name: #@ "harbor-slot-" + distro.name
+  - name: #@ stripslash("harbor-slot-" + distro.name)
     type: registry-image
     icon: docker
     source:
@@ -24,7 +28,7 @@ resources:
 jobs:
 #@ for distro in data.values.distros :
 #@   for arch in distro.arch :
-  - name: #@ "build-" + distro.name + "-" + arch
+  - name: #@ stripslash("build-" + distro.name + "-" + arch)
     serial_groups: [ build-image ]
     plan:
       - get: #@ "blueprints-" + distro.name
@@ -33,22 +37,24 @@ jobs:
         privileged: true
         config:
           platform: linux
-          inputs:
-            - name: #@ "blueprints-" + distro.name
-          outputs:
-            - name: image
           image_resource:
             type: registry-image
             source:
               repository: concourse/oci-build-task
+          inputs:
+            - name: #@ stripslash("blueprints-" + distro.name)
+          caches:
+            - path: cache
+          outputs:
+            - name: image
           run:
             path: build
           params:
             CONTEXT: #@ "blueprints-" + distro.name + "/docker/" + distro.name
-            IMAGE_PLATFORM: #@ "linux/" + arch
+            IMAGE_PLATFORM: #@ arch
         output_mapping:
           image: pikefarm-workers-image
-      - put: #@ "harbor-slot-" + distro.name
+      - put: #@ stripslash("harbor-slot-" + distro.name)
         params:
           image: pikefarm-workers-image/image.tar
 #@  end

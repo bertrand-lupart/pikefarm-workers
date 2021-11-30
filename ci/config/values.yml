@@ -4,16 +4,16 @@ git_uri: "https://github.com/bertrand-lupart/pikefarm-workers.git"
 registry_repo: "harbor.ci.gstack.io/pikelang/pikefarm-workers"
 distros:
   - name: "debian-9"
-    arch: ["amd64","i386","arm64","arm"]
+    arch: ["linux/amd64","linux/i386","linux/arm64","linux/arm"]
   - name: "debian-10"
-    arch: ["amd64","i386","arm64","arm","ppc64le","s390x","mips64le"]
+    arch: ["linux/amd64","linux/i386","linux/arm64","linux/arm","linux/ppc64le","linux/s390x","linux/mips64le"]
   - name: "debian-11"
-    arch: ["amd64","i386","arm64","arm","ppc64le","s390x","mips64le"]
+    arch: ["linux/amd64","linux/i386","linux/arm64","linux/arm","linux/ppc64le","linux/s390x","linux/mips64le"]
   - name: "debian-sid"
-    arch: ["amd64","i386","arm64","arm","ppc64le","s390x","mips64le"]
+    arch: ["linux/amd64","linux/i386","linux/arm64","linux/arm","linux/ppc64le","linux/s390x","linux/mips64le"]
   - name: "alpine-3.14"
-    arch: ["amd64","i386","arm64","arm","ppc64le","s390x"]
+    arch: ["linux/amd64","linux/i386","linux/arm64","linux/arm","linux/ppc64le","linux/s390x"]
   - name: "alpine-3.15"
-    arch: ["amd64","i386","arm64","arm","ppc64le","s390x"]
+    arch: ["linux/amd64","linux/i386","linux/arm64","linux/arm","linux/ppc64le","linux/s390x"]
   - name: "alpine-edge"
-    arch: ["amd64","i386","arm64","arm","ppc64le","s390x"]
+    arch: ["linux/amd64","linux/i386","linux/arm64","linux/arm","linux/ppc64le","linux/s390x"]
