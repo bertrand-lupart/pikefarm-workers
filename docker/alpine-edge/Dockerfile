@@ -9,7 +9,6 @@ RUN apk add --update \
 RUN addgroup -S -g 817 xenofarm && \
   adduser -S -G xenofarm -u 817 xenofarm
 
-
 USER xenofarm
 
 WORKDIR /pikefarm 
