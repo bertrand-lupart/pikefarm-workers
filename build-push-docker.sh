@@ -44,12 +44,14 @@ build_push()
 
 if [ $# -eq 0 ]; then
   for elem in "docker"/*; do
-    echo "building ${elem}"
+    echo "Building ${elem}..."
     build_push "${elem}"
+    echo "Built ${elem}."
   done
 else
   for elem in "$@"; do
-    echo "building ${elem}"
+    echo "Building ${elem}..."
     build_push "${elem}"
+    echo "Built ${elem}."
   done
 fi
