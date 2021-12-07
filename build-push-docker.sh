@@ -3,7 +3,12 @@
 set -x
 set -e
 
-bin_docker="/usr/local/bin/docker"
+bin_docker=$(which docker)
+err=$?
+if [ ${err} -ne 0]; then
+  echo "FATAL: docker binary not found" >&2
+  exit ${err}
+fi
 
 # Docker hub
 user="bertrandlupart"
@@ -17,7 +22,7 @@ build_push()
   dir=$1
 
   if [ ! -d "${dir}" ]; then
-    echo "${dir} is not a directory" >&2
+    echo "FATAL: ${dir} is not a directory" >&2
     return
   fi
 
