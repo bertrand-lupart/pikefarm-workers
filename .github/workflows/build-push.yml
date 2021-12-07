@@ -19,6 +19,8 @@ jobs:
         run: |
           ls -alR ${{ github.workspace }}
           whereis docker
+      - name: login to docker hub
+        run: echo "${{ secrets.DOCKER_PASSWD }}" | docker login -u "${{ secrets.DOCKER_USER }}" --password-stdin
       - name: Run script
         run: |
           cd ${{ github.workspace }}
