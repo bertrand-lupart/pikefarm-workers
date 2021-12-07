@@ -14,4 +14,8 @@ jobs:
         run: |
           ls -alR ${{ github.workspace }}
           whereis docker
+      - name: Run script
+        run: |
+          cd ${{ github.workspace }}
+          ./build-push-docker.sh
       - run: echo "🍏 This job's status is ${{ job.status }}."
