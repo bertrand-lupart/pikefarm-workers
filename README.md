@@ -1,3 +1,5 @@
+[![Build and Push images](https://github.com/bertrand-lupart/pikefarm-workers/actions/workflows/build-push.yml/badge.svg)](https://github.com/bertrand-lupart/pikefarm-workers/actions/workflows/build-push.yml)
+
 # Pikefarm workers
 
 These are container images for running the [Pikefarm](http://pike.lysator.liu.se/development/pikefarm/) projects.
