@@ -1,9 +1,7 @@
 name: Build and push to Dockerhub
-on:
-  push:
-    branches: master
+on: [push]
 jobs:
-  build:
+  Build-Push:
     runs-on: ubuntu-latest
     steps:
       - run: echo "Starting..."
