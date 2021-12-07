@@ -1,5 +1,8 @@
 name: Build and Push image
-on: [push]
+on:
+  push:
+    paths:
+      - 'docker/**'
 jobs:
   Build-Push:
     runs-on: ubuntu-latest
