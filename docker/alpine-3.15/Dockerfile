@@ -4,6 +4,7 @@ RUN apk add --update \
   make gcc g++ m4 libgmpxx wget curl \
   nettle-dev nettle \
   zlib-dev \
+  bzip2-dev \
   && rm -rf /var/cache/apk/*
 
 RUN addgroup -S -g 817 xenofarm && \
