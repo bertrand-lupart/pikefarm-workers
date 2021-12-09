@@ -3,6 +3,7 @@ FROM debian:sid
 RUN apt-get update && apt-get upgrade -y && apt-get install -y --no-install-recommends \
   make gcc g++ m4 libgmp-dev wget curl \
   nettle-dev nettle-bin \
+  libbz2-dev \
   libmariadbd-dev \
   libpcre2-dev \
   && apt-get clean && rm -rf /var/lib/apt/lists/*
