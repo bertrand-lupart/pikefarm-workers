@@ -15,47 +15,74 @@ resources:
       branch: main
       paths:
         - #@ "docker/" + distro.name + "/*"
-  - name: #@ stripslash("harbor-slot-" + distro.name)
+#@   for arch in distro.arch :
+  - name: #@ stripslash("harbor-slot-" + distro.name + "-" + arch)
     type: registry-image
     icon: docker
     source:
       repository: #@ data.values.registry_repo
-      username: ((docker-registry-username))
-      password: ((docker-registry-password))
-      tag: #@ distro.name
+      username: ((private-registry-username))
+      password: ((private-registry-password))
+      tag: #@ stripslash(distro.name + "-" + arch)
+#@   end
 #@ end
 
 jobs:
 #@ for distro in data.values.distros :
-#@   for arch in distro.arch :
-  - name: #@ stripslash("build-" + distro.name + "-" + arch)
+  - name: #@ stripslash("build-" + distro.name  )
     serial_groups: [ build-image ]
     plan:
       - get: #@ "blueprints-" + distro.name
         trigger: true
-      - task: docker-build
-        privileged: true
+      - in_parallel:
+          limit: 2
+          steps:
+#@   for arch in distro.arch :
+            - do:
+                - task: docker-build
+                  privileged: true
+                  config:
+                    platform: linux
+                    image_resource:
+                      type: registry-image
+                      source:
+                        repository: concourse/oci-build-task
+                    inputs:
+                      - name: #@ stripslash("blueprints-" + distro.name)
+                    caches:
+                      - path: cache
+                    outputs:
+                      - name: image
+                    run:
+                      path: build
+                    params:
+                      CONTEXT: #@ "blueprints-" + distro.name + "/docker/" + distro.name
+                      IMAGE_PLATFORM: #@ arch
+                  output_mapping:
+                    image: #@ "image-" + stripslash(arch)
+                - put: #@ stripslash("harbor-slot-" + distro.name + "-" + arch)
+                  params:
+                    image: #@ "image-" + stripslash(arch) + "/image.tar"
+#@  end
+      - task: aggregate-images
         config:
           platform: linux
           image_resource:
             type: registry-image
             source:
-              repository: concourse/oci-build-task
+              repository: gstack/gk-ops
           inputs:
-            - name: #@ stripslash("blueprints-" + distro.name)
-          caches:
-            - path: cache
-          outputs:
-            - name: image
+#@   for arch in distro.arch :
+            - name: #@ stripslash("image-" + arch)
+#@   end
           run:
-            path: build
-          params:
-            CONTEXT: #@ "blueprints-" + distro.name + "/docker/" + distro.name
-            IMAGE_PLATFORM: #@ arch
-        output_mapping:
-          image: pikefarm-workers-image
-      - put: #@ stripslash("harbor-slot-" + distro.name)
-        params:
-          image: pikefarm-workers-image/image.tar
-#@  end
+            path: bash
+            args:
+              - -c
+              - |
+                set -ueo pipefail
+                for img in image-*; do
+                  tar -tvf ${img}/image.tar
+                  exit 1
+                done
 #@ end
