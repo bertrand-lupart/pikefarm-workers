@@ -1,5 +1,6 @@
 name: Build and Push image
 on:
+  workflow_dispatch:
   push:
     branches:
       - main
@@ -11,12 +12,12 @@ jobs:
     steps:
       - name: Check out repository code
         uses: actions/checkout@v3
-      - name: install buildx
+      - name: Install buildx
         id: buildx
         uses: crazy-max/ghaction-docker-buildx@v1
         with:
           version: latest
-      - name: login to docker hub
+      - name: Login to docker hub
         run: echo "${{ secrets.DOCKER_PASSWD }}" | docker login -u "${{ secrets.DOCKER_USER }}" --password-stdin
       - name: Run script
         run: |
