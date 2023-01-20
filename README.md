@@ -13,7 +13,7 @@ These images *don't* contain a Pike interpreter. Please use [Pike Docker contain
 
 ```mermaid
 graph LR
-O[OS Image] --Install--> D[Development tools & Pike dependencies] --Build--> W{{Pikefarm worker image}} -.Upload.-> X[Pikefarm results]
+O[OS Image] --Install--> D[Development tools & Pike dependencies] --Build--> W(((Pikefarm worker image))) -.Upload.-> X[Pikefarm results]
 S[Pike code snapshots] -.Download.-> W
 ```
 
